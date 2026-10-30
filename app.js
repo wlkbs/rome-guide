@@ -63,9 +63,10 @@ async function getTexts(tour) {
 async function boot() {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js').catch(() => {});
-    let reloaded = false;
+    let reloaded = false; const hadCtrl = !!navigator.serviceWorker.controller;
     navigator.serviceWorker.addEventListener('controllerchange', () => {
-      if (reloaded || !audio.paused) return; reloaded = true; location.reload();
+      // 처음 설치할 때는 새로고침하지 않고, 새 버전으로 바뀔 때만 (재생 중이 아닐 때) 새로고침
+      if (!hadCtrl || reloaded || !audio.paused) return; reloaded = true; location.reload();
     });
   }
   try { S.cat = await (await fetch('data/catalog.json', { cache: 'no-cache' })).json(); }
