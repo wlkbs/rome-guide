@@ -1,8 +1,8 @@
 /* 코미꼬 로마 오디오 가이드 — 오프라인 서비스 워커 */
-const BUILD = 'c6dc095cbb';
+const BUILD = '43cea25219';
 const SHELL = 'shell-v2-' + BUILD;
 const CONTENT = 'content-v2';
-const SHELL_FILES = ["./", "index.html", "app.css", "app.js", "lib/leaflet.js", "lib/leaflet.css", "manifest.webmanifest", "icon-180.png", "icon-192.png", "icon-512.png", "data/catalog.json", "data/check.7a576e28.bin", "maps/map_V.jpg", "maps/map_C.jpg", "maps/map_M.jpg"];
+const SHELL_FILES = ["./", "index.html", "app.css", "app.js", "lib/leaflet.js", "lib/leaflet.css", "manifest.webmanifest", "icon-180.png", "icon-192.png", "icon-512.png", "data/catalog.json", "data/check.7a576e28.bin", "maps/map_V.jpg", "maps/map_C.jpg", "maps/map_N.jpg", "maps/map_M.jpg"];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(SHELL).then(c => c.addAll(SHELL_FILES)).then(() => self.skipWaiting()));
