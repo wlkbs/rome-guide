@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>코미꼬의 콜로세움 오디오 가이드</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="코미꼬 콜로세움">
+<meta name="theme-color" content="#17202A">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="stylesheet" href="lib/leaflet.css">
+<link rel="stylesheet" href="app.css?v=bb4cc5dff1">
+</head>
+<body>
+
+<!-- 잠금 -->
+<section id="lock" class="screen" hidden>
+  <div class="lock-in">
+    <div class="logo">🎧</div>
+    <h1>코미꼬의 콜로세움 오디오 가이드</h1>
+    <p class="muted">비밀번호를 한 번만 넣으면 이 폰에서는 다시 묻지 않아요.</p>
+    <form id="lockForm" autocomplete="off">
+      <input id="pw" type="password" inputmode="text" placeholder="비밀번호" autocapitalize="off" autocorrect="off" spellcheck="false">
+      <button class="btn primary" type="submit">열기</button>
+    </form>
+    <p id="lockMsg" class="err" role="alert"></p>
+  </div>
+</section>
+
+<!-- 홈 -->
+<section id="home" class="screen" hidden>
+  <header class="top">
+    <div>
+      <p class="eyebrow">코미꼬의 오디오 가이드</p>
+      <h1 class="display">로마 · 콜로세움</h1>
+    </div>
+    <button id="infoBtn" class="icon-btn" aria-label="정보">ⓘ</button>
+  </header>
+  <div id="resume"></div>
+  <div id="tourCards" class="cards"></div>
+  <p class="foot muted">한 번 <b>오프라인 저장</b>을 해 두면 비행기 모드에서도 들을 수 있어요. 저장은 와이파이에서 하세요.</p>
+</section>
+
+<!-- 투어 -->
+<section id="tour" class="screen" hidden>
+  <header class="tour-top">
+    <button id="backBtn" class="icon-btn" aria-label="뒤로">‹</button>
+    <h2 id="tourTitle"></h2>
+    <button id="gpsBtn" class="pill" aria-pressed="false"><span class="dot"></span>내 위치</button>
+  </header>
+  <div id="mapWrap"><div id="map"></div><button id="fitBtn" class="map-fab" aria-label="전체 보기">⤢</button></div>
+  <div id="near" hidden></div>
+  <div id="trackList"></div>
+</section>
+
+<!-- 미니 플레이어 -->
+<div id="mini" hidden>
+  <img id="miniImg" alt="">
+  <div class="mini-meta"><b id="miniCode"></b><span id="miniTitle"></span></div>
+  <button id="miniPlay" class="icon-btn big" aria-label="재생">▶</button>
+  <div id="miniBar"><i></i></div>
+</div>
+
+<!-- 플레이어 -->
+<section id="player" aria-hidden="true">
+  <div class="p-head">
+    <button id="pClose" class="icon-btn" aria-label="닫기">⌄</button>
+    <span id="pChapter" class="muted"></span>
+    <button id="pMap" class="icon-btn" aria-label="지도에서 보기">🗺</button>
+  </div>
+  <div id="stage">
+    <div id="slides"></div>
+    <div id="dots"></div>
+    <button id="followChip" class="chip" hidden>사진 자동 넘김 켜기</button>
+  </div>
+  <p id="caption"></p>
+  <div class="p-body">
+    <div class="p-title"><b id="pCode"></b><h3 id="pTitle"></h3></div>
+    <div class="seek">
+      <input id="seek" type="range" min="0" max="1000" value="0" aria-label="재생 위치">
+      <div class="times"><span id="tCur">0:00</span><span id="tDur">0:00</span></div>
+    </div>
+    <div class="ctl">
+      <button id="bPrev" class="icon-btn" aria-label="이전 트랙">⏮</button>
+      <button id="bBack" class="icon-btn" aria-label="15초 뒤로">↺<small>15</small></button>
+      <button id="bPlay" class="play" aria-label="재생">▶</button>
+      <button id="bFwd" class="icon-btn" aria-label="15초 앞으로">↻<small>15</small></button>
+      <button id="bNext" class="icon-btn" aria-label="다음 트랙">⏭</button>
+    </div>
+    <div class="opts">
+      <button id="speedBtn" class="pill">1.0×</button>
+      <button id="autoBtn" class="pill" aria-pressed="false">연속 재생 끔</button>
+    </div>
+    <div class="tabs" role="tablist">
+      <button role="tab" data-tab="script" aria-selected="true">대본</button>
+      <button role="tab" data-tab="photos" aria-selected="false">사진</button>
+      <button role="tab" data-tab="info" aria-selected="false">자료</button>
+    </div>
+    <div id="tab-script" class="tabpane"></div>
+    <div id="tab-photos" class="tabpane" hidden></div>
+    <div id="tab-info" class="tabpane" hidden></div>
+  </div>
+</section>
+
+<!-- 사진 크게 보기 -->
+<div id="viewer" hidden>
+  <div id="vStage"><img id="vImg" alt=""></div>
+  <p id="vCap"></p>
+  <button id="vClose" class="icon-btn" aria-label="닫기">✕</button>
+</div>
+
+<!-- 정보 -->
+<section id="info" class="screen" hidden>
+  <header class="tour-top">
+    <button id="infoBack" class="icon-btn" aria-label="뒤로">‹</button>
+    <h2>정보 · 사진 출처</h2>
+    <span></span>
+  </header>
+  <div id="infoBody" class="info-body"></div>
+</section>
+
+<div id="toast" role="status"></div>
+<audio id="audio" preload="auto" playsinline></audio>
+<script src="lib/leaflet.js"></script>
+<script src="app.js?v=bb4cc5dff1"></script>
+</body>
+</html>
